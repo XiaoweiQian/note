@@ -65,8 +65,8 @@ kramdown:
     coderay_css: style
 
 #站点基础配置
-title: xiaowei
-subTitle:
+title: Xiaowei's note
+subTitle: 技术与生活，一些杂言碎语
 description: 
 url: /note
 feed: /feed.xml
