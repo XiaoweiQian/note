@@ -1,8 +1,9 @@
 ---
+date: 2016-01-05
 layout: post
 title: KVM 环境搭建ceph集群
-comments: false
-category: openstack
+categories: openstack
+tags: ceph kvm
 ---
 
 1. 环境要求
