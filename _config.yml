@@ -85,21 +85,7 @@ nav:
     url: /contact.html
     icon: icon-envelope-alt
     class: none
-  - text: 联系我
-    url: 
-    icon: icon-heart
-    class: none
 
-page:
-  - text: 文章分类
-    url: /archives.html
-    last: true
-  - text: 友情链接
-    url: /links.html
-    last: true
-  - text: 关于我
-    url: /contact.html
-    last: false
 
 author:
   name: Xiaowei
