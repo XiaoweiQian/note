@@ -69,20 +69,20 @@ title: xiaowei
 subTitle:
 description: 
 url: .
-feed: /feed.xml
+feed: ./feed.xml
 
 #菜单配置
 nav:
   - text: 首页
-    url: /index.html
+    url: ./index.html
     icon: icon-home
     class: home
   - text: 文章归档
-    url: /archives.html
+    url: ./archives.html
     icon: icon-reorder
     class: none
   - text: 关于我
-    url: /contact.html
+    url: ./contact.html
     icon: icon-envelope-alt
     class: none
   - text: 联系我
@@ -92,13 +92,13 @@ nav:
 
 page:
   - text: 文章分类
-    url: /archives.html
+    url: ./archives.html
     last: true
   - text: 友情链接
-    url: /links.html
+    url: ./links.html
     last: true
   - text: 关于我
-    url: /contact.html
+    url: ./contact.html
     last: false
 
 author:
