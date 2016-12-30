@@ -68,7 +68,7 @@ kramdown:
 title: xiaowei
 subTitle:
 description: 
-url: http://localhost:4000
+url: ../
 feed: /feed.xml
 
 #菜单配置
