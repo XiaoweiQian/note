@@ -13,3 +13,4 @@ pygments: true
 safe: true
 paginate: 20
 about: ""
+domain: "note"
