@@ -2,8 +2,8 @@
 date: 2016-01-07
 layout: post
 title: Openstack 部署总结
-categories: openstack
-tags: centos
+categories: 技术
+tags: centos7 openstack
 ---
 
 1. 安装前准备
