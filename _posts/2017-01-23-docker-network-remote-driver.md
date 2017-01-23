@@ -193,7 +193,7 @@ InfoResponse - endpoint 额外的用户自定义数据
 error - 异常信息*
 
 9. Join(\*JoinRequest) (\*JoinResponse, error)   
-container start时调用，把endpoint(macvlan device)加入对应的sandbox(network namespace)。   
+*container start时调用，把endpoint(macvlan device)加入对应的sandbox(network namespace)。   
 参数:   
 JoinRequest - 需要启动的container，包含network id、endpoint id、sandox和Options数据   
 返回:   
