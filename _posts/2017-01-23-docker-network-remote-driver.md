@@ -57,7 +57,7 @@ golang自带有包管理工具go get，通过go get可以将依赖的第三方�
 上面的问题总结起来其实就是项目引用的第三方库没有列入到项目里面，如果把第三方库直接放到项目里就能解决这些问题了，而Godep这个工具，就是用来解决这个问题的。
 
 ```sh
-# 安装godep
+#安装godep
 go get github.com/tools/godep
 
 #把第三方包纳入管理，会把所有的依赖包存到vendor目录，并生成Godeps.json文件
@@ -108,7 +108,7 @@ ExecStart=/usr/lib/docker/your-plugin
 [Install]
 WantedBy=multi-user.target
 
-# socket文件（例如/lib/systemd/system/your-plugin.socket）：
+#socket文件(例如/lib/systemd/system/your-plugin.socket)
 [Unit]
 Description=Your plugin
 
@@ -132,108 +132,108 @@ WantedBy=sockets.target
 
 实现docker/go-plugins-helpers/network/api.go中Driver API，具体API如下：
 
-1. GetCapabilities() (*CapabilitiesResponse, error)   
-network创建时被调用，返回driver scope。   
+1. GetCapabilities() (\*CapabilitiesResponse, error)   
+*network创建时被调用，返回driver scope。   
 参数:   
 null   
 返回:   
-*CapabilitiesResponse - driver scope信息GlobalScope 或者 LocalScope   
-error - 异常信息
+CapabilitiesResponse - driver scope信息GlobalScope 或者 LocalScope   
+error - 异常信息*
 
-2. AllocateNetwork(*AllocateNetworkRequest) (*AllocateNetworkResponse, error)   
-Driver scope 为 global时，swarm manager 创建network络时调用，保存信息到global store(swarm 默认实现为etcd)。   
+2. AllocateNetwork(\*AllocateNetworkRequest) (\*AllocateNetworkResponse, error)   
+*Driver scope 为 global时，swarm manager 创建network络时调用，保存信息到global store(swarm 默认实现为etcd)。   
 参数:   
-*AllocateNetworkRequest - 需要创建的network，包括sunbnet、gateway、IPrange和Options等数据   
+AllocateNetworkRequest - 需要创建的network，包括sunbnet、gateway、IPrange和Options等数据   
 返回:   
-*AllocateNetworkResponse - 经过解析处理的Options信息   
-error - 异常信息 
+AllocateNetworkResponse - 经过解析处理的Options信息   
+error - 异常信息*
 
-3. FreeNetwork(*FreeNetworkRequest) error   
-Driver scope 为 global时，swarm manager 删除network会调用，会从global store删除指定network。   
+3. FreeNetwork(\*FreeNetworkRequest) error   
+*Driver scope 为 global时，swarm manager 删除network会调用，会从global store删除指定network。   
 参数:   
-*FreeNetworkRequest - 需要删除的network ID   
+FreeNetworkRequest - 需要删除的network ID   
 返回:   
-error-异常信息
+error-异常信息*
 
-4. CreateNetwork(*CreateNetworkRequest) error   
-swarm node 创建网络时调用，在node节点创建network。   
+4. CreateNetwork(\*CreateNetworkRequest) error   
+*swarm node 创建网络时调用，在node节点创建network。   
 参数:   
-*CreateNetworkRequest - 需要创建的network，包括sunbnet、gateway、IPrange和Options等数据   
+CreateNetworkRequest - 需要创建的network，包括sunbnet、gateway、IPrange和Options等数据   
 返回:    
-error - 异常信息
+error - 异常信息*
 
-5. DeleteNetwork(*DeleteNetworkRequest) error   
-swarm node 删除网络时调用，在node节点删除指定network。   
+5. DeleteNetwork(\*DeleteNetworkRequest) error   
+*swarm node 删除网络时调用，在node节点删除指定network。   
 参数:   
-*DeleteNetworkRequest - 需要删除的network ID   
+DeleteNetworkRequest - 需要删除的network ID   
 返回:   
-error - 异常信息
+error - 异常信息*
 
-6. CreateEndpoint(*CreateEndpointRequest) (*CreateEndpointResponse, error)   
-swarm node 创建container时调用，在node节点上生成endpoint并把数据写入driver localstore。   
+6. CreateEndpoint(\*CreateEndpointRequest) (\*CreateEndpointResponse, error)   
+*swarm node 创建container时调用，在node节点上生成endpoint并把数据写入driver localstore。   
 参数:   
-*CreateEndpointRequest - 需要创建的endpoint，包含network id、endpoint id和ip等数据   
+CreateEndpointRequest - 需要创建的endpoint，包含network id、endpoint id和ip等数据   
 返回:   
 *CreateEndpointResponse - container interface 包含ip、gateway和mac等数据   
-error - 异常信息
+error - 异常信息*
 
-7. DeleteEndpoint(*DeleteEndpointRequest) error   
-swarm node 删除container时调用，在node节点上删除endpoint并从driver localstore中remove相关数据。   
+7. DeleteEndpoint(\*DeleteEndpointRequest) error   
+*swarm node 删除container时调用，在node节点上删除endpoint并从driver localstore中remove相关数据。   
 参数:   
-*DeleteEndpointRequest - 需要删除的endpoint，包含network id 和 endpoint id 数据   
+DeleteEndpointRequest - 需要删除的endpoint，包含network id 和 endpoint id 数据   
 返回:   
-error - 异常信息
+error - 异常信息*
 
-8. EndpointInfo(*InfoRequest) (*InfoResponse, error)   
-swarm manager 查询endpoint 时调用，返回endpoint的自定义数据。   
+8. EndpointInfo(\*InfoRequest) (\*InfoResponse, error)   
+*swarm manager 查询endpoint 时调用，返回endpoint的自定义数据。   
 参数:   
-*InfoResponse - 需要查询的endpoint，包含network id和endpoint id数据   
+InfoResponse - 需要查询的endpoint，包含network id和endpoint id数据   
 返回:    
-*InfoResponse - endpoint 额外的用户自定义数据   
-error - 异常信息
+InfoResponse - endpoint 额外的用户自定义数据   
+error - 异常信息*
 
-9. Join(*JoinRequest) (*JoinResponse, error)   
+9. Join(*JoinRequest) (\*JoinResponse, error)   
 container start时调用，把endpoint(macvlan device)加入对应的sandbox(network namespace)。   
 参数:   
-*JoinRequest - 需要启动的container，包含network id、endpoint id、sandox和Options数据   
+JoinRequest - 需要启动的container，包含network id、endpoint id、sandox和Options数据   
 返回:   
-*JoinResponse - 启动后的container，包含macvlan device name、gateway和container interface name数据   
-error - 异常信息
+JoinResponse - 启动后的container，包含macvlan device name、gateway和container interface name数据   
+error - 异常信息*
 
-10. Leave(*LeaveRequest) error   
-container stop时调用，把endpoint(macvlan device)移出对应的sandbox(network namespace)。   
+10. Leave(\*LeaveRequest) error   
+*container stop时调用，把endpoint(macvlan device)移出对应的sandbox(network namespace)。   
 参数:   
-*LeaveRequest - 需要移出的endpoint，包含network id和endpoint id数据   
+LeaveRequest - 需要移出的endpoint，包含network id和endpoint id数据   
 返回:   
-error - 异常信息
+error - 异常信息*
 
-11. DiscoverNew(*DiscoveryNotification) error   
-swarm manager 发现事件通知后续处理策略，例如:集群中新增加一个节点。   
+11. DiscoverNew(\*DiscoveryNotification) error   
+*swarm manager 发现事件通知后续处理策略，例如:集群中新增加一个节点。   
 参数:   
-*DiscoveryNotification - 发现事件通知，包含事件类型和事件数据   
+DiscoveryNotification - 发现事件通知，包含事件类型和事件数据   
 返回:   
-error - 异常信息
+error - 异常信息*
 
-12. DiscoverDelete(*DiscoveryNotification) error   
-swarm manager 删除事件通知后续处理策略，例如:集群中新移除一个节点。   
+12. DiscoverDelete(\*DiscoveryNotification) error   
+*swarm manager 删除事件通知后续处理策略，例如:集群中新移除一个节点。   
 参数:
-*DiscoveryNotification - 删除事件通知，包含事件类型和事件数据   、
+DiscoveryNotification - 删除事件通知，包含事件类型和事件数据   、
 返回:   
-error - 异常信息
+error - 异常信息*
 
-13. ProgramExternalConnectivity(*ProgramExternalConnectivityRequest) error   
-container endpoint join完成后调用，配置endpoint额外的网络信息，例如:L4 Data。   
+13. ProgramExternalConnectivity(\*ProgramExternalConnectivityRequest) error   
+*container endpoint join完成后调用，配置endpoint额外的网络信息，例如:L4 Data。   
 参数:   
-*ProgramExternalConnectivityRequest - 指定endpoint，包含network id、endpoint id、sandox和Options数据   
+ProgramExternalConnectivityRequest - 指定endpoint，包含network id、endpoint id、sandox和Options数据   
 返回:   
-error - 异常信息
+error - 异常信息*
 
-14. RevokeExternalConnectivity(*RevokeExternalConnectivityRequest) error   
-container endpoint leave前调用，删除endpoint额外的网络信息，例如:L4 Data。   
+14. RevokeExternalConnectivity(\*RevokeExternalConnectivityRequest) error   
+*container endpoint leave前调用，删除endpoint额外的网络信息，例如:L4 Data。   
 参数:    
-*RevokeExternalConnectivityRequest - 指定endpoint，包含network id、endpoint id、sandox和Options数据   
+RevokeExternalConnectivityRequest - 指定endpoint，包含network id、endpoint id、sandox和Options数据   
 返回:   
-error - 异常信息
+error - 异常信息*
 
 ## Test
 
