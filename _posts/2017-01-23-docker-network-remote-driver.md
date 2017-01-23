@@ -92,10 +92,10 @@ Docker总是先在/run/docker/plugins目录中搜索UNIX域套接字，如果域
 3. 插件激活   
 当插件第一次被引用的时候（不管是用户通过插件名引用如 docker network create --driver=macvlan>还是启动一个配置了插件的容器），docker在插件目录查找指定插件并且通过握手来激活它。插件在docker daemon启动的时候不会自动激活，而是在需要的时候即刻激活。
 
-4. Systemd 激活   
+4. Systemd激活   
 插件也能够通过systemd进行套接字激活,官方插件帮助原生支持套接字激活。为了使用套接字激活需要一个service文件和一个socket文件。   
 service文件,例如/lib/systemd/system/your-plugin.service   
-```sh
+```
 [Unit]
 Description=Your plugin
 Before=docker.service
