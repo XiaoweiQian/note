@@ -73,8 +73,9 @@ godep go build main.go
 
 * Docker 插件机制说明
 
-1. 插件发现
+docker 提供了一套第三方插件的开发规范，具体内容如下:
 
+1. 插件发现   
 当用户或者容器尝试通过插件名称使用插件的时候docker就从插件目录查找并发现插件。
 
 有如下三种类型的文件可以放在插件目录中:   
@@ -86,17 +87,14 @@ godep go build main.go
 UNIX域套接字文件必须放在/run/docker/plugins下面，而spec文件可以放在/etc/docker/plugins 或者/usr/lib/docker/plugins下,文件的名称（不包括扩展名）决定了插件的名。   
 Docker总是先在/run/docker/plugins目录中搜索UNIX域套接字，如果域套接字不存在则在/etc/docker/plugins和/usr/lib/docker/plugins下检查spec文件和json文件,一旦找到给定插件就停止目录扫描。 
 
-2. 插件生命周期
-
+2. 插件生命周期   
 插件应该在docker daemon启动前启动，在docker daemon停止后再停止,当使用systemd的服务打包一个插件的时候，应该使用systemd依赖去管理启动和停止的顺序。   
 升级插件的时候要先停止docker daemon，升级插件，然后再启动docker daemon。
 
-3. 插件激活
-
+3. 插件激活   
 当插件第一次被引用的时候（不管是用户通过插件名引用<如 docker network create --driver=macvlan>还是启动一个配置了插件的容器），docker在插件目录查找指定插件并且通过握手来激活它。插件在docker daemon启动的时候不会自动激活，而是在需要的时候即刻激活。
 
-4. Systemd 激活
-
+4. Systemd 激活   
 插件也能够通过systemd进行套接字激活,官方插件帮助原生支持套接字激活。为了使用套接字激活需要一个service文件和一个socket文件。   
 service文件（例如/lib/systemd/system/your-plugin.service)
 
@@ -126,13 +124,11 @@ WantedBy=sockets.target
 
 这就确保了当docker daemon连接socket的时候插件已经启动完成了（例如daemon第一次使用sockets或者插件意外崩溃）。
 
-5. API 设计
-
+5. API 设计   
 插件API是运行于HTTP之上的JSON格式的远程过程调用，类似于webhooks，请求从docker daemon流向插件，因此插件需要实现HTTP服务端，并且服务端绑定在“插件发现”小节中提到的UNIX套接字上。   
 所有的请求都是HTTP POST请求，API通过Accept头提供版本号, 目前总被设置成 application/vnd.docker.plugins.v1+json。
 
-6. 插件助手
-
+6. 插件助手   
 为了简化插件开发，官方在docker/go-plugins-helpers为docker当前支持的每种插件都提供了sdk，当需要开发第三方插件时需要引入此包。   
 
 关于以上插件机制说明的原文链接:[Docker Plugin API](http://dockone.io/article/1297)
@@ -163,7 +159,6 @@ Driver scope 为 global时，swarm manager 删除network会调用，会从global
 *FreeNetworkRequest - 需要删除的network ID   
 返回:   
 error-异常信息
-
 
 4. CreateNetwork(*CreateNetworkRequest) error
 swarm node 创建网络时调用，在node节点创建network。   
