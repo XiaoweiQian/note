@@ -118,7 +118,6 @@ ListenStream=/run/docker/plugins/your-plugin.sock
 [Install]
 WantedBy=sockets.target
 ```
-这就确保了当docker daemon连接socket的时候插件已经启动完成了（例如daemon第一次使用sockets或者插件意外崩溃）。
 
 5. API 设计   
 插件API是运行于HTTP之上的JSON格式的远程过程调用，类似于webhooks，请求从docker daemon流向插件，因此插件需要实现HTTP服务端，并且服务端绑定在“插件发现”小节中提到的UNIX套接字上。   
