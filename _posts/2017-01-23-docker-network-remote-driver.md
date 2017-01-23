@@ -94,7 +94,7 @@ Docker总是先在/run/docker/plugins目录中搜索UNIX域套接字，如果域
 
 4. Systemd 激活   
 插件也能够通过systemd进行套接字激活,官方插件帮助原生支持套接字激活。为了使用套接字激活需要一个service文件和一个socket文件。   
-service文件（例如/lib/systemd/system/your-plugin.service)
+service文件(例如/lib/systemd/system/your-plugin.service)   
 ```sh
 [Unit]
 Description=Your plugin
