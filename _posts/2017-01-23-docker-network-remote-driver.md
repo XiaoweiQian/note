@@ -71,7 +71,7 @@ godep go build main.go
 
 ```
 
-* Docker 插件机制说明
+* Docker插件机制说明
 
 docker 提供了一套第三方插件的开发规范，具体内容如下:
 
@@ -119,18 +119,17 @@ ListenStream=/run/docker/plugins/your-plugin.sock
 [Install]
 WantedBy=sockets.target
 ```
-
 5. API 设计   
 插件API是运行于HTTP之上的JSON格式的远程过程调用，类似于webhooks，请求从docker daemon流向插件，因此插件需要实现HTTP服务端，并且服务端绑定在“插件发现”小节中提到的UNIX套接字上。   
 所有的请求都是HTTP POST请求，API通过Accept头提供版本号, 目前总被设置成 application/vnd.docker.plugins.v1+json。
 
 6. 插件助手   
 为了简化插件开发，官方在docker/go-plugins-helpers为docker当前支持的每种插件都提供了sdk，当需要开发第三方插件时需要引入此包。   
-关于以上插件机制说明的原文链接:[Docker Plugin API](http://dockone.io/article/1297)
+关于以上插件机制说明的原文链接:[Docker Plugin API](http://dockone.io/article/1297)。
 
 * Libnetwork remote driver api 实现说明
 
-实现docker/go-plugins-helpers/network/api.go中Driver API，具体API如下：
+实现docker/go-plugins-helpers/network/api.go中Driver API，具体API如下:
 
 1. GetCapabilities() (\*CapabilitiesResponse, error)   
 *network创建时被调用，返回driver scope。   
