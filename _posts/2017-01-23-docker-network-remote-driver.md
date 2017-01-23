@@ -95,6 +95,7 @@ Docker总是先在/run/docker/plugins目录中搜索UNIX域套接字，如果域
 4. Systemd 激活   
 插件也能够通过systemd进行套接字激活,官方插件帮助原生支持套接字激活。为了使用套接字激活需要一个service文件和一个socket文件。   
 service文件（例如/lib/systemd/system/your-plugin.service)
+
 ```sh
 [Unit]
 Description=Your plugin
@@ -174,7 +175,7 @@ error - 异常信息*
 参数:   
 CreateEndpointRequest - 需要创建的endpoint，包含network id、endpoint id和ip等数据   
 返回:   
-*CreateEndpointResponse - container interface 包含ip、gateway和mac等数据   
+CreateEndpointResponse - container interface 包含ip、gateway和mac等数据   
 error - 异常信息*
 
 7. DeleteEndpoint(\*DeleteEndpointRequest) error   
@@ -192,7 +193,7 @@ InfoResponse - 需要查询的endpoint，包含network id和endpoint id数据
 InfoResponse - endpoint 额外的用户自定义数据   
 error - 异常信息*
 
-9. Join(*JoinRequest) (\*JoinResponse, error)   
+9. Join(\*JoinRequest) (\*JoinResponse, error)   
 container start时调用，把endpoint(macvlan device)加入对应的sandbox(network namespace)。   
 参数:   
 JoinRequest - 需要启动的container，包含network id、endpoint id、sandox和Options数据   
