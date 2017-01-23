@@ -92,7 +92,15 @@ Docker总是先在/run/docker/plugins目录中搜索UNIX域套接字，如果域
 3. 插件激活   
 当插件第一次被引用的时候（不管是用户通过插件名引用如 docker network create --driver=macvlan>还是启动一个配置了插件的容器），docker在插件目录查找指定插件并且通过握手来激活它。插件在docker daemon启动的时候不会自动激活，而是在需要的时候即刻激活。
 
-4. Systemd激活   
+4. API 设计   
+插件API是运行于HTTP之上的JSON格式的远程过程调用，类似于webhooks，请求从docker daemon流向插件，因此插件需要实现HTTP服务端，并且服务端绑定在“插件发现”小节中提到的UNIX套接字上。   
+所有的请求都是HTTP POST请求，API通过Accept头提供版本号, 目前总被设置成 application/vnd.docker.plugins.v1+json。
+
+5. 插件助手   
+为了简化插件开发，官方在docker/go-plugins-helpers为docker当前支持的每种插件都提供了sdk，当需要开发第三方插件时需要引入此包。   
+关于以上插件机制说明的原文链接:[Docker Plugin API](http://dockone.io/article/1297)。
+
+6. Systemd激活   
 插件也能够通过systemd进行套接字激活,官方插件帮助原生支持套接字激活。为了使用套接字激活需要一个service文件和一个socket文件。   
 service文件,例如/lib/systemd/system/your-plugin.service
 
@@ -119,13 +127,6 @@ ListenStream=/run/docker/plugins/your-plugin.sock
 [Install]
 WantedBy=sockets.target
 ```
-5. API 设计   
-插件API是运行于HTTP之上的JSON格式的远程过程调用，类似于webhooks，请求从docker daemon流向插件，因此插件需要实现HTTP服务端，并且服务端绑定在“插件发现”小节中提到的UNIX套接字上。   
-所有的请求都是HTTP POST请求，API通过Accept头提供版本号, 目前总被设置成 application/vnd.docker.plugins.v1+json。
-
-6. 插件助手   
-为了简化插件开发，官方在docker/go-plugins-helpers为docker当前支持的每种插件都提供了sdk，当需要开发第三方插件时需要引入此包。   
-关于以上插件机制说明的原文链接:[Docker Plugin API](http://dockone.io/article/1297)。
 
 * Libnetwork remote driver api 实现说明
 
