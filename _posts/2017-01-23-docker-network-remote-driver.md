@@ -3,7 +3,7 @@ date: 2017-01-23
 layout: post
 title: Docker network remote drivrer 开发介绍
 categories: 技术
-tags: docker libnerwork
+tags: docker libnerwork plugin
 ---
 
 ## Introduction
@@ -98,7 +98,6 @@ Docker总是先在/run/docker/plugins目录中搜索UNIX域套接字，如果域
 
 5. 插件助手   
 为了简化插件开发，官方在docker/go-plugins-helpers为docker当前支持的每种插件都提供了sdk，当需要开发第三方插件时需要引入此包。   
-关于以上插件机制说明的原文链接:[Docker Plugin API](http://dockone.io/article/1297)。
 
 6. Systemd激活   
 插件也能够通过systemd进行套接字激活,官方插件帮助原生支持套接字激活。为了使用套接字激活需要一个service文件和一个socket文件。   
@@ -127,6 +126,7 @@ ListenStream=/run/docker/plugins/your-plugin.sock
 [Install]
 WantedBy=sockets.target
 ```
+关于以上插件机制说明的原文链接:[Docker Plugin API](http://dockone.io/article/1297)。
 
 * Libnetwork remote driver api 实现说明
 
