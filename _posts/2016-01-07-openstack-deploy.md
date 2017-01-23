@@ -68,7 +68,7 @@ tags: centos7 openstack
     # 启动ntp
     systemctl enable ntpd
     systemctl start ntpd
-    ```
+
     # mariadb
     yum -y install mariadb-galera-server MySQL-python
 
@@ -172,7 +172,7 @@ tags: centos7 openstack
       rabbit_port=5670
     ```
 
-*. compute 热迁移相关配置
+* compute 热迁移相关配置
 
     ```sh
     # 需要配置计算节点无密码SSH
