@@ -14,7 +14,7 @@ Docker 官方编译环境是基于ubuntu，而国内生产环境大多是Centos7
 
 * GO 1.7.3 环境安装
 
-go 1.7.3 binary [go1.7.3 download](http://www.golangtc.com/static/go/1.7.3/go1.7.3.linux-amd64.tar.gz)下载
+go 1.7.3 binary [go1.7.3 download](http://www.golangtc.com/static/go/1.7.3/go1.7.3.linux-amd64.tar.gz)
 
 ```sh
 # 解压tar到/usr/local/
