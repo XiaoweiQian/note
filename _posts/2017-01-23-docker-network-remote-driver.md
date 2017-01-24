@@ -1,9 +1,9 @@
 ---
 date: 2017-01-23
 layout: post
-title: Docker network remote drivrer 开发介绍
+title: Docker network remote driver 开发介绍
 categories: 技术
-tags: docker libnerwork plugin
+tags: docker libnetwork plugin
 ---
 
 ## Introduction
