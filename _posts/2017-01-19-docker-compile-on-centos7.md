@@ -53,9 +53,20 @@ yum install docker-engine
 
 # 安装文件系统依赖
 yum install btrfs-progs-devel device-mapper-devel
+
+# 安装RPM依赖
+yum install rpmdevtools
+
+#安装selinux
+yum install selinux-policy-devel
+
+#安装go-md2man
+yum install go-md2man
 ```
 
 ## Compile
+
+此章节内容适合在开发测试环境中手动编译和部署，如果需要发布到生产环境直接参照下一章节打包RPM
 
 * git clone docker源码到go 源码目录并编译
 
@@ -82,4 +93,82 @@ cp ./bundles/1.13.0/dynbinary-daemon/dockerd-1.13.0 /usr/bin/dockerd
 #start docker
 systemctl start docker
 ```
+
+## RPM package
+
+* 生成RPM目录
+
+```sh
+cd ~
+rpmdev-setuptree
+```
+
+* 修改docker默认spec
+
+```sh
+cd /opt/gocode/src/github.com/docker/docker
+vi ./hack/make/.build-rpm/docker-engine.spec
+
+#打开注释，修改如下:
+./man/md2man-all.sh
+
+#修改默认docker bin路径,由/usr/local/bin/ 修改为/usr/bin,例如:
+install -p -m 755 /usr/bin/docker-proxy $RPM_BUILD_ROOT/%{_bindir}/docker-proxy
+
+```
+
+* 编写打包脚本
+
+```sh
+cd /opt/gocode/src/github.com/docker/docker
+
+sudo tee ./hack/package-rpm <<-'EOF'
+#!/bin/bash
+
+VERSION="1.13.0"
+rpmName=docker-engine
+rpmVersion=$VERSION
+rpmRelease="1.sn"
+
+DOCKER_GITCOMMIT=$(git rev-parse --short HEAD)
+if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
+    DOCKER_GITCOMMIT="$DOCKER_GITCOMMIT-unsupported"
+fi
+
+echo "Package start."
+echo "rpmVersion="$rpmVersion
+echo "rpmRelease="$rpmRelease
+cp ./hack/make/.build-rpm/* /root/rpmbuild/SPECS/
+cp -r ../docker ../${rpmName}
+tar --exclude .git -zcf /root/rpmbuild/SOURCES/${rpmName}.tar.gz -P ../${rpmName}
+tar -zcf /root/rpmbuild/SOURCES/${rpmName}-selinux.tar.gz -C ./contrib/selinux/ ${rpmName}-selinux
+rm -rf ../${rpmName}
+rpmbuild -ba \
+            --define "_gitcommit $DOCKER_GITCOMMIT" \
+            --define "_release $rpmRelease" \
+            --define "_version $rpmVersion" \
+            --define "_origversion $VERSION" \
+            /root/rpmbuild/SPECS/${rpmName}.spec
+
+rpmbuild -ba \
+                    --define "_gitcommit $DOCKER_GITCOMMIT" \
+                    --define "_release $rpmRelease" \
+                    --define "_version $rpmVersion" \
+                    --define "_origversion $VERSION" \
+                    /root/rpmbuild/SPECS/${rpmName}-selinux.spec
+
+echo "Package end."
+EOF
+
+chmod +x ./hack/package-rpm
+```
+
+* 打包
+
+```sh
+cd /opt/gocode/src/github.com/docker/docker/
+./hack/package-rpm
+#RPM包默认目录为/root/rpmbuild/RPMS
+```
+
 End

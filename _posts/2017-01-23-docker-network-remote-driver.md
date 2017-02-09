@@ -116,15 +116,6 @@ ExecStart=/usr/lib/docker/your-plugin
 [Install]
 WantedBy=multi-user.target
 
-# socket文件,例如/lib/systemd/system/your-plugin.socket
-[Unit]
-Description=Your plugin
-
-[Socket]
-ListenStream=/run/docker/plugins/your-plugin.sock
-
-[Install]
-WantedBy=sockets.target
 ```
 关于以上插件机制说明的原文链接:[Docker Plugin API](http://dockone.io/article/1297)。
 
