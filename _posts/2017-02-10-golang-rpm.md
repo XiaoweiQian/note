@@ -158,10 +158,10 @@ install -p -m 644 docker-macvlan.service $RPM_BUILD_ROOT/%{_unitdir}/docker-macv
 编译脚本用以打包RPM时调用，GOlang打包编译时由于rpmbuild不在GOPATH目录中，会出现各种编译问题，目前想到的解决办法如下。
 
 1. 动态修改GOPATH
-在rpmbild中对应编译目录创建隐式文件夹.gopath，并把当前环境GOPATH软连接到.gopath文件夹，再用.gopath的绝对路径重写GOPATH。
+在rpmbild中对应编译目录创建隐式文件夹.gopath，并把当前环境GOPATH软连接到.gopath文件夹，再用.gopath的绝对路径重写GOPATH。  
 
 2. 使用相对路径，指定源码路径为编译目录
-rpmbuild中的源码不能直接用于编译，需要指定.gopath中源码路径为编译目录。
+rpmbuild中的源码不能直接用于编译，需要指定.gopath中源码路径为编译目录。  
 
 ```sh
 #!/bin/bash
@@ -187,6 +187,8 @@ go build -o ./docker-macvlan-$VERSION $PKGDIR
 ```
 
 * 打包脚本文件
+
+package-rpm.sh 脚本文件，在工程源码目录执行此脚本开始打包。
 
 ```sh
 #!/bin/bash
