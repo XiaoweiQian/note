@@ -22,6 +22,8 @@ Docker pluginV2 管理机制可以使得第三方插件以镜像的方式管理�
 
 * 插件编译
 
+插件编译和插件运行环境必须一致，因此使用alpine作为编译环境。
+
 1. 编写Dockerfile.dev   
 若插件基于golang开发，使用golang:1.7.5-alpine3.5基础镜像作为插件编译环境   
 
@@ -56,6 +58,8 @@ compile:
 ```
 
 * 插件打包
+
+一个标准的docker第三方插件必须包含config.json文件和rootfs文件系统。
 
 1. 编写Dockerfile   
 以alpine镜像为基础运行环境，把插件可执行文件打包到镜像中   
@@ -129,6 +133,8 @@ rootfs:
 
 * 插件上传
 
+插件可以上传到hub公共仓库，也可以上传到本地私有仓库，如果要上传本地私有库，插件的名字必须按照此格式192.168.1.2:5000/plugin_name，才能上传成功。
+
 1. 编写Makefile   
 通过指定插件目录plugin创建本地插件，启用插件并上传到镜像仓库   
 
@@ -150,10 +156,10 @@ push:  clean compile rootfs create enable
 
 * 插件安装
 
-所有docker节点通过docker命令安装插件
+所有docker节点通过docker plugin install命令安装插件
 
 ```
-docker plugin install ${PLUGIN_NAME}
+docker plugin install ${PLUGIN_NAME} --grant-all-permissions
 ```
 
 End
