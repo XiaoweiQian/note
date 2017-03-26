@@ -164,8 +164,8 @@ Docker pluginV2 管理机制可以使得第三方插件以镜像的方式管理�
 
     所有docker节点通过docker plugin install命令安装插件
 
-        ```
-        docker plugin install ${PLUGIN_NAME} --grant-all-permissions
-        ```
+    ```
+    docker plugin install ${PLUGIN_NAME} --grant-all-permissions
+    ```
 
 End
