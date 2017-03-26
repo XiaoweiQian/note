@@ -202,6 +202,7 @@ tags: docker macvlan qos
     ```
     
     * 192.168.1.3 客户端出口流量：
+
     ```
     Client connecting to 192.168.1.4, TCP port 5001
     TCP window size:  416 KByte
@@ -222,6 +223,7 @@ tags: docker macvlan qos
     ```
 
     * 192.168.1.2 客户端出口流量：
+
     ```
     Client connecting to 192.168.1.4, TCP port 5001
     TCP window size:  416 KByte
@@ -244,6 +246,7 @@ tags: docker macvlan qos
 * egress
     
     * 在192.168.1.4上做出口流量限速，配置步骤如下：
+
     ```
     # 创建htb队列，未分类的出口流量默认走子分类10
     ip netns exec ns2 tc qdisc add dev veth2 root handle 1: htb default 10
@@ -267,11 +270,13 @@ tags: docker macvlan qos
     ip netns exec ns0 iperf -c 192.168.1.4 -i 1 -w 416k -d
     ip netns exec ns1 iperf -c 192.168.1.4 -i 1 -w 416k -d
     ```
+
     * 测试结果如下：
 
     在192.168.1.4上做的出口流量限速带宽总和在47mbit左右，其中目的IP为192.168.1.3出口流量在37.5mbit左右，目的IP为192.168.1.2的出口流量在9.4mbit左右，这与设置的分类策略基本一致。
 
     * 192.168.1.4 服务器端流量数据：
+
     ```
     源IP为192.168.1.2和192.168.1.3的入口流量ID分别为4和5，目的IP为192.168.1.2和192.168.1.3的出口流量ID分别为6和8
     
@@ -331,6 +336,7 @@ tags: docker macvlan qos
     ```
     
     * 192.168.1.3 客户端出入口流量：
+
     ```
     Client connecting to 192.168.1.4, TCP port 5001
     TCP window size:  416 KByte
@@ -363,6 +369,7 @@ tags: docker macvlan qos
     ```
     
     * 192.168.1.2 客户端出入口流量：
+
     ```
     Server listening on TCP port 5001
     TCP window size:  416 KByte
