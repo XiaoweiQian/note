@@ -196,4 +196,47 @@ D.Governance(治理)
 
 通过预测市场对协议中定义的变量进行分析，用户可以学习到如何有效地改进协议。 通过预测市场对潜在的硬分叉进行分析，我们可以帮助社区达成共识，使用哪个版本的代码。每个用户为自己衡量选择最优的方式，这是种简单的默认策略，将最大化其持有的价值。
 
+E.Scalability(扩展性)
+
+E.1）Sharding trees(分片树)：到目前为止提出的架构是高度可扩展的,即使每个用户只保存其关心的一部分块链状态，而忽略其他用户的数据，也可以使区块链正常运行起来。新用户需要至少一个状态副本来确定他们关心的子状态，但是我们可以在任意多个节点上分割这些数据，使得每个节点的负载都尽量的小。默克尔树被用来证明一个子状态是某个状态的一部分[11]，这很容易想象出一个场景，某些节点专注于树的跟踪保存，通过插入和查找功能来获得报酬。
+
+E.2）Light clients(轻客户端)：轻客户端不下载整个块。首先，用户给客户端一个他所关注的某个历史区块的哈希值，这种技术也被称为weak subjectivity(弱主观性)[12]。然后，客户端只知道下载包含该哈希的区块，而且只下载区块头。区块头比完整的块小得多; 只需很少的交易处理。 为了简单起见，在第II-A.4章节讨论块结构时，我们没有提到区块头，但区块头包含以下内容：
+* 上一个块的散列。
+* 所有状态树的根哈希。
+
+E.3）State channels and parallelism(状态通道和并行性)：状态通道具有巨大的吞吐量，其内部的大多数交易永远不会在区块链上被执行或保存。另外，通道不会在链上写入任何共享状态，因此所有交易都可以并行处理。 鉴于目前销售的大多数消费类硬件至少有四个处理核心，因此可以提升4倍左右的交易吞吐量。
+
+此外，从实际情况讲一般不会有复杂的并发交互场景，因此对区块链架构进行分片应该是比较容易的。 由于区块链分片技术仍然是实验性的，因此我们在安特元初始设计时不考虑采用任何分片技术。 但是，将来分片技术更新发展后，安特元应该是可以最简单的实现分片技术的区块链之一。
+
+E.4） Transactions per second at a given memory requirement(特定内存的每秒交易量):协议的变量会被共识机制经常的更新，从其初始默认值，我们可以计算出每秒默认的交易数。
+
+```
+1 Note that this is a draft and will likely
+2 change.
+3
+4 We define the following variables for the
+following calculations:
+5
+6 B = block\_size in bytes
+7 F = blocks\_till\_finality
+8 R = time\_till\_finality in seconds
+9 T = transaction size in bytes
+10
+11 transactions per second = B * F / (T * R)
+12
+13 B = 1000000 bytes = 1 megabyte per block
+14 F = 24*60*2 blocks per day
+15 R / F = 30 seconds per block
+16 R = 24*3600 seconds per day
+17 T = 1000 bytes per transaction
+18
+19 1000000 * 24*60*2 / 1000 / 24*3600
+20 = 1000000 / 1000 / 30
+21 = ca. 32 transactions per second (fast
+enough to sign up every human within 8
+years)
+```
+
+为了操作一个节点，我们需要保留所有块最终状态的副本，并且我们需要把块信息记录100次以上，用以防止发生攻击。 估计2天内，会有5760个块需要写入，因此需要的内存数是5760 * 1MB* 100 = 576000MB= 576GB 当没有发生攻击时，每个节点只需要存储大约5.76GB的存数据。
+
 待续...
