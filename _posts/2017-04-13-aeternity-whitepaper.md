@@ -328,6 +328,86 @@ A.2）Free option problem(自由选项问题)：
 
 例如，如果双方想要投注100安币，那么他们可能会分成1000次，每次只赌0.1个安币。 这将需要大约1000次消息传递，每个方向500次，由于合约执行过程不会提交给区块链，因此这种方式是及其廉价的。另一个例子，如果一个人想创建一种持续100天的金融资产，可以每个小时签署一次，共签署2400次，这将需要大约2400个消息传递，每个方向1200个。
 
+A.3）Liquidity loss and state channel topologies(流动性损失和状态通道拓扑)：
 
+如第II-B.1节所示，当使用哈希锁实现组合通道时，任何中间商都必须锁定至少是通过他们发送的一倍的安币。例如，如果Alice和Carol想通过Bob交易，Bob将扮演Carol的角色与Alice实现交互，反之亦然。
 
-待续...
+这对于Bob来说代价有点高，因此他可能收取手续费作为补偿。如果Alice和Carol期望彼此之间进行大量交易，他们可以通过创建一个新的通道来避免这种情况，并通过哈希锁将合约转移到新通道。
+
+然而，由于保持额外的通道开放，会对流动性造成负面影响，在许多情况下，通过中间商也是可行的，特别是交易双方预计未来不会有很大的交易量的情况下。 因此，可能会出现一种通道拓扑，有钱用户通过它来实现与其他用户的无信任交易。
+
+应该指出的是，这并不构成单点故障，因为我们不信任这些交易发送者。 如果在一个哈希锁的秘密被揭示之前，发送者离线已经离线，则交易不会通过。 如果在之后离线，唯一可能的“负面”效应是发送者无法认领它的安币。
+
+B. Future work(未来工作)
+
+有几种可能的方法来改进当前架构。
+
+B.1）Functional contract language(函数式合约语言)：
+
+一个合理的方向是未来试验更高级的语言，更接近与函数式范式。跟踪隐式堆栈通常是容易出错的，并且可能不适合高级别的开发人员，而使用函数式语言开发合约是相当容易的，这大大简化了合约的开发和验证。如果这样做，虚拟机将与新语言紧密的结合在一起，使编译降低出错率，并且减少开发人员的依赖性。 理想的情况是，从表面语言到虚拟机代码的翻译只需要直接转录，这种方式已经过同行间的评审和研究，但仍做出了一些务实性的让步。
+
+B.2）Multi-party channels(多方通道)：
+
+目前，所有通道都仅限于双方，虽然多方通道可以通过哈希锁来实现，但这代价有点高。 因此，我们计划研究一种支持n-party(多方)的通道，适用与m-of-n的结算机制。
+
+GLOSSARY(词汇表)
+
+Blockchain(区块链)：具有计量访问功能的分布式防篡改数据库。 数据库由逐渐增长的哈希链块定义，并且可以有附加任何规则。
+
+Aeon(安币)：一个安币代表帐户的基本单位和它拥有安特元区块链的访问权，它可以被转让。
+
+Transaction(交易)：从用户发送给区块链的消息，说明用户如何使用其货币来访问区块链。
+
+State Channel(状态通道)：记录在块上的两个用户之间的关系，它使用户能够来回发送安币，并在用户之间创建由区块链强制结算的无信任智能合约。
+
+Hash(哈希)：哈希对于一个任何大小的二进制输入，都能给定一个固定大小的输出，相同的输入始终有相同的输出，不能从输出反向推导出输入。
+
+Hashlocking(哈希锁)：这是我们如何连接成对的通道，创建涉及2人以上的智能合约的机制。 一个秘密被哈希引用后，当秘密被揭示时，它可以同时更新多个通道。
+
+Governance(治理)：一个明确的过程，为未来的区块链协议的变化做出决策。
+
+Oracle(预言机)：一种机制，告诉区块链我们所处的现实世界，使用预言机，用户可以预测事件的结果。
+
+Value-Holder(价值持有人)：拥有安币或系统中金融衍生工具的用户。
+
+Validator(验证者)：验证者是参与共识机制的用户，在安特元中，每个价值持有者都可以参与。
+
+ACKNOWLEDGMENTS(致谢)
+
+感谢Vlad，Matt，Paul，Dirk，Martin，Alistair，Devon和Ben的校对阅读,感谢能和他们以及许多其他人的深度讨论。
+
+REFERENCES(引用)
+
+[1] S. Nakamoto, “Bitcoin: A peer-to-peer electronic cash system,” 2008. [Online]. Available: https://bitcoin.org/bitcoin.pdf.
+
+[2] V. Buterin, “Ethereum: A next-generation smart contract and decentralized application platform,” 2014.[Online]. Available: https://github.com/ethereum/wiki/wiki/White-Paper.
+
+[3] P. Sztorc, “Market empiricism,” [Online]. Available: http://bitcoinhivemind.com/papers/1_Purpose.pdf.
+
+[4] M. Liston and M. Koppelmann, “A visit to the oracle,” 2016. [Online]. Available: https://blog.gnosis.pm.
+
+[5] C. Detrio, “Smart markets for smart contracts,” 2015.[Online]. Available: http://cdetr.io/smartmarkets/.
+
+[6] Namecoin wiki, 2016. [Online]. Available: https://wiki.namecoin.org/index.php?title=Welcome.
+
+[7] P. Snow, B. Deery, J. Lu, et al., “Factom: Business processes secured by immutable audit trails on the blockchain,” 2014. [Online]. Available: http://bravenewcoin.com/assets/Whitepapers/Factom-Whitepaper.pdf.
+
+[8] J. Peterson and J. Krug, “Augur: A decentralized,open-source platform for prediction markets,” 2014.[Online]. Available: http://bravenewcoin.com/assets/Whitepapers/Augur-A-Decentralized-Open-Source-Platformfor-Prediction-Markets.pdf.
+
+[9] A. Swartz, “Squaring the triangle: Secure, decentralized,human-readable names,” 2011. [Online]. Available:http://www.aaronsw.com/weblog/squarezooko.
+
+[10] T. Hvitved, “A Survey of Formal Languages for Contracts,” in Formal Languages and Analysis of Contract-Oriented Software, 2010, pp. 29–32. [Online].Available: http:// www.diku.dk/hjemmesider/ansatte/hvitved/publications/hvitved10flacosb.pdf.
+
+[11] R. C. Merkle, “Protocols for public key cryptosystems,”in IEEE Symposium on Security and Privacy,1980.
+
+[12] V. Buterin, “Proof of stake: How I learned to love weak subjectivity,” 2014. [Online]. Available: https://blog.ethereum.org/2014/11/25/proof-stake-learned-love-weak-subjectivity/.
+
+[13] “Schema.org schemas,” 2016. [Online]. Available:http://schema.org/docs/schemas.html.
+
+[14] “Atomic-cross-chain-trading,” 2016. [Online]. Available:https://en.bitcoin.it/wiki/Atomic%5C_cross-chain%5C_trading.
+
+[15] “Interledger,” 2016. [Online]. Available: https://interledger.org/.
+
+[16] K. J. Arrow, R. Forsythe, M. Gorham, et al., “Thepromise of prediction markets,” Science, 320 2008.[Online]. Available: http://mason.gmu.edu/˜rhanson/PromisePredMkt.pdf.
+
+[17] Z. Hess, “Chalang,” 2016. [Online]. Available:https://github.com/aeternity/chalang.
