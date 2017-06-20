@@ -9,8 +9,8 @@ beian:
 cnzz: 
 weibo: 
 github: XiaoweiQian
-pygments: true
+highlighter: pygments
 safe: true
 paginate: 20
 about: "一个理想主义技术宅的自言自语."
-domain: "/note"
+domain: ""
